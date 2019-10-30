@@ -29,3 +29,7 @@ ShowList.propTypes = {
         total_results: T.number.isRequired
     }).isRequired
 };
+
+ShowList.defaultProps = {
+    pageInfo: {}
+};

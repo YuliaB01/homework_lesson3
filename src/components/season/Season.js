@@ -1,18 +1,29 @@
-import React, {useState, useEffect, Fragment} from 'react';
-import {Link, useParams, useRouteMatch, useHistory} from 'react-router-dom';
-import {ApiClient} from '../../api/ApiClient';
+import React, {Fragment, useState} from 'react';
+import {Link, useHistory, useParams, useRouteMatch} from 'react-router-dom';
 import {Loader} from '../common/loader';
 import {EpisodeModal} from '../common/EpisodeModal';
 import {BackButton} from '../common/BackButton';
 import {Poster} from '../common/Poster';
 import {Description} from '../common/Description';
+import useDataFetching from '../../hooks/useDataFetchingHook';
+import {ApiUrls} from '../../api/apiUrls';
 
 export const Season = () => {
-    const [season, setSeason] = useState({});
-    const [isLoading, setIsLoading] = useState(true);
     const [showModal, setShowModal] = useState(false);
     const [episodeNum, setEpisodeNum] = useState(0);
+
     const history = useHistory();
+
+    const {showId, seasonNum} = useParams();
+    const {url} = useRouteMatch();
+
+    const { loading, result, error } = useDataFetching(
+        ApiUrls.fetchSeason(showId, seasonNum)
+    );
+
+    if (loading || error) {
+        return loading ? <Loader/> : error.message;
+    }
 
     const handleShowMessageClick = () => setShowModal(true);
     const handleCloseModal = () => {
@@ -20,44 +31,27 @@ export const Season = () => {
         setShowModal(false);
     };
 
-    const {showId, seasonNum} = useParams();
-    const {url} = useRouteMatch();
-
-    useEffect(() => {
-        setIsLoading(true);
-
-        ApiClient.fetchSeason(showId, seasonNum)
-            .then(response => {
-                setSeason(response);
-                setIsLoading(false);
-            });
-    }, []);
-
     const onClick = (event) => {
         setEpisodeNum(event.target.dataset.episodeNum);
         handleShowMessageClick();
     };
 
-    if (isLoading) {
-        return <Loader/>
-    }
-
-    return season && (
+    return result && (
         <Fragment>
             <BackButton/>
-            <Description data={season}>
+            <Description data={result}>
                 <div className="details show-seasons-count">
-                    <span>Season number: </span>{season.season_number}
+                    <span>Season number: </span>{result.season_number}
                 </div>
                 <div className="details show-episodes-count">
                     <span>Season episodes: </span>
-                    {season.episodes.length}
+                    {result.episodes.length}
                 </div>
             </Description>
             <div className="table-wrapper container">
                 <table className="table is-hoverable is-bordered is-striped is-narrow is-fullwidth">
                     <tbody>
-                    {season.episodes.map(episode =>
+                    {result.episodes.map(episode =>
                         <tr key={episode.id}>
                             <td className="poster-cell">
                                 <Poster posterPath={episode.still_path} className='season-table-poster'/>

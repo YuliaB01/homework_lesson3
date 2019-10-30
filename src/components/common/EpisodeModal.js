@@ -5,42 +5,35 @@ import {ApiClient} from '../../api/ApiClient';
 import {Loader} from './loader';
 import {Description} from './Description';
 import T from 'prop-types';
-
-const modalRoot = document.getElementById('modal-root');
+import useDataFetching from '../../hooks/useDataFetchingHook';
+import {ApiUrls} from '../../api/apiUrls';
 
 export const EpisodeModal = ({episodeNum, onClose}) => {
-    const [episode, setEpisode] = useState({});
-    const [isLoading, setIsLoading] = useState(true);
+    const modalRoot = document.getElementById('modal-root');
 
     const {showId, seasonNum} = useParams();
 
-    useEffect(() => {
-        setIsLoading(true);
+    const { loading, result, error } = useDataFetching(
+        ApiUrls.fetchEpisode(showId, seasonNum, episodeNum)
+    );
 
-        ApiClient.fetchEpisode(showId, seasonNum, episodeNum)
-            .then(response => {
-                setEpisode(response);
-                setIsLoading(false);
-            })
-    }, []);
-
-    if (isLoading) {
-        return <Loader/>;
+    if (loading || error) {
+        return loading ? <Loader/> : error.message;
     }
 
-    return episode && ReactDom.createPortal(
+    return result && ReactDom.createPortal(
         <div id='modal' className='modal episode-modal is-active'>
             <div className='modal-background'/>
             <div id='modal-content' className='modal-content'>
                 <div id='box' className='box'>
-                    <Description data={episode} className='modal-desc'>
+                    <Description data={result} className='modal-desc'>
                         <div className='season-num'>
                             <span className='is-bold'>Season: </span>
-                            <span>{episode.season_number}</span>
+                            <span>{result.season_number}</span>
                         </div>
                         <div className='episode-num'>
                             <span className='is-bold'>Episode: </span>
-                            <span>{episode.episode_number}</span>
+                            <span>{result.episode_number}</span>
                         </div>
                     </Description>
                 </div>

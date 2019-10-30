@@ -1,36 +1,22 @@
-import React, {useState, useEffect} from 'react';
-import {ApiClient} from '../../api/ApiClient';
+import React from 'react';
 import {ShowList} from '../common/ShowList';
 import {Loader} from '../common/loader';
 import {useParams} from 'react-router-dom';
+import useDataFetching from '../../hooks/useDataFetchingHook';
+import {ApiUrls} from '../../api/apiUrls';
 
 export const TopRated  = () => {
     const { pageNum } = useParams();
 
-    const [showsState, setShowsState] = useState({
-        data: {},
-        isLoading: true
-    });
+    const { loading, result, error } = useDataFetching(
+        ApiUrls.fetchTopRated(pageNum)
+    );
 
-    useEffect(() => {
-        setShowsState({
-            ...showsState,
-            isLoading: true
-        });
-
-        ApiClient.fetch(pageNum, 'top_rated').then(response => {
-            setShowsState({
-                data: response,
-                isLoading: false
-            });
-        });
-    }, [pageNum]);
-
-    if (showsState.isLoading) {
-        return <Loader/>;
+    if (loading || error) {
+        return loading ? <Loader/> : error.message;
     }
 
-    return showsState.data && (
-        <ShowList pageInfo={showsState.data}/>
+    return result && (
+        <ShowList pageInfo={result}/>
     );
 };

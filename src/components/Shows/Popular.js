@@ -1,34 +1,20 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {ShowList} from '../common/ShowList';
-import {ApiClient} from '../../api/ApiClient';
 import {Loader} from '../common/loader';
 import {useParams} from 'react-router-dom';
+import useDataFetching from '../../hooks/useDataFetchingHook';
+import {ApiUrls} from '../../api/apiUrls';
 
 export const Popular = () => {
     const {pageNum} = useParams();
 
-    const [showsState, setShowsState] = useState({
-        data: {},
-        isLoading: true
-    });
+    const { loading, result, error } = useDataFetching(
+        ApiUrls.fetchPopular(pageNum)
+    );
 
-    useEffect(() => {
-        setShowsState({
-            ...showsState,
-            isLoading: true
-        });
-
-        ApiClient.fetch(pageNum, 'popular').then(response => {
-            setShowsState({
-                data: response,
-                isLoading: false
-            });
-        });
-    }, [pageNum]);
-
-    if (showsState.isLoading) {
-        return <Loader/>
+    if (loading || error) {
+        return loading ? <Loader/> : error.message;
     }
 
-    return showsState.data && <ShowList pageInfo={showsState.data}/>;
+    return result && <ShowList pageInfo={result}/>;
 };
