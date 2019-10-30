@@ -14,7 +14,7 @@ export const PaginationInput = ({onChange, curPage, maxValue}) => (
 );
 
 PaginationInput.propTypes = {
-  onChange: T.func.isRequired,
-  curPage: T.number.isRequired,
-  maxValue: T.number.isRequired
+    onChange: T.func.isRequired,
+    curPage: T.number.isRequired,
+    maxValue: T.number.isRequired
 };

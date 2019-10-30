@@ -13,7 +13,7 @@ export const SingleShow = () => {
     const {url} = useRouteMatch();
     const {pathname} = useLocation();
 
-    const { loading, result, error } = useDataFetching(
+    const {loading, result, error} = useDataFetching(
         ApiUrls.fetchShow(showId)
     );
 

@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from "react";
+import {useEffect, useState} from 'react';
 import {ApiClient} from '../api/ApiClient';
 
 const useDataFetching = (dataSource) => {
     const [loading, setLoading] = useState(true);
     const [result, setResult] = useState(null);
-    const [error, setError] = useState("");
-
+    const [error, setError] = useState('');
 
     useEffect(() => {
         async function fetchData() {

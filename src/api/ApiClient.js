@@ -3,6 +3,6 @@ export const ApiClient = {
     baseUrl: 'https://api.themoviedb.org/3/tv/',
 
     fetchData: (url) => {
-      return fetch(url);
+        return fetch(url);
     }
 };

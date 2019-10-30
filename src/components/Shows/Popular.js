@@ -8,7 +8,7 @@ import {ApiUrls} from '../../api/apiUrls';
 export const Popular = () => {
     const {pageNum} = useParams();
 
-    const { loading, result, error } = useDataFetching(
+    const {loading, result, error} = useDataFetching(
         ApiUrls.fetchPopular(pageNum)
     );
 

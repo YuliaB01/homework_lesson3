@@ -5,10 +5,10 @@ import {useParams} from 'react-router-dom';
 import useDataFetching from '../../hooks/useDataFetchingHook';
 import {ApiUrls} from '../../api/apiUrls';
 
-export const TopRated  = () => {
-    const { pageNum } = useParams();
+export const TopRated = () => {
+    const {pageNum} = useParams();
 
-    const { loading, result, error } = useDataFetching(
+    const {loading, result, error} = useDataFetching(
         ApiUrls.fetchTopRated(pageNum)
     );
 

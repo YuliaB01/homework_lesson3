@@ -1,7 +1,6 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import ReactDom from 'react-dom';
 import {useParams} from 'react-router-dom';
-import {ApiClient} from '../../api/ApiClient';
 import {Loader} from './loader';
 import {Description} from './Description';
 import T from 'prop-types';
@@ -13,7 +12,7 @@ export const EpisodeModal = ({episodeNum, onClose}) => {
 
     const {showId, seasonNum} = useParams();
 
-    const { loading, result, error } = useDataFetching(
+    const {loading, result, error} = useDataFetching(
         ApiUrls.fetchEpisode(showId, seasonNum, episodeNum)
     );
 

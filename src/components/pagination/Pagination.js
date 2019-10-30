@@ -1,7 +1,7 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import T from 'prop-types';
 import {ShowTypes} from '../../types/showTypes';
-import {useLocation, useHistory} from 'react-router-dom';
+import {useHistory, useLocation} from 'react-router-dom';
 import {PaginationButton} from './Button';
 import {PaginationInput} from './PaginationInput';
 
@@ -44,15 +44,19 @@ export const Pagination = ({pageInfo}) => {
                     Page <b>{currentPage}</b><span> of </span><b>{pageInfo.total_pages}</b>
                 </div>
                 <div className="nav-btns-wrap">
-                    <PaginationButton link={`${pathName}${(+currentPage <= 1 ? 1 : currentPage - 1)}`}
-                                      className="pagination-item pagination-previous"
-                                      disabled={currentPage === 1}>
+                    <PaginationButton
+                        link={`${pathName}${(+currentPage <= 1 ? 1 : currentPage - 1)}`}
+                        className="pagination-item pagination-previous"
+                        disabled={currentPage === 1}
+                    >
                         Previous
                     </PaginationButton>
                     <PaginationInput {...{onChange}} curPage={currentPage} maxValue={pageInfo.total_pages}/>
-                    <PaginationButton link={`${pathName}${(+currentPage >= pageInfo.total_pages ? pageInfo.total_pages : currentPage + 1)}`}
-                                      className="pagination-item pagination-next"
-                                      disabled={currentPage === pageInfo.total_pages}>
+                    <PaginationButton
+                        link={`${pathName}${(+currentPage >= pageInfo.total_pages ? pageInfo.total_pages : currentPage + 1)}`}
+                        className="pagination-item pagination-next"
+                        disabled={currentPage === pageInfo.total_pages}
+                    >
                         Next
                     </PaginationButton>
                 </div>

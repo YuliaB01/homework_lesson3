@@ -12,5 +12,5 @@ Text.defaultProps = {
 };
 
 Text.propTypes = {
-  size: T.string
+    size: T.string
 };

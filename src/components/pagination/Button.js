@@ -13,8 +13,8 @@ export const PaginationButton = ({link, className, disabled, children}) => (
 );
 
 PaginationButton.propTypes = {
-  link: T.string.isRequired,
-  className: T.string.isRequired,
-  disabled: T.bool.isRequired,
-  children: T.oneOfType([T.string, T.node]).isRequired
+    link: T.string.isRequired,
+    className: T.string.isRequired,
+    disabled: T.bool.isRequired,
+    children: T.oneOfType([T.string, T.node]).isRequired
 };

@@ -17,7 +17,7 @@ export const Season = () => {
     const {showId, seasonNum} = useParams();
     const {url} = useRouteMatch();
 
-    const { loading, result, error } = useDataFetching(
+    const {loading, result, error} = useDataFetching(
         ApiUrls.fetchSeason(showId, seasonNum)
     );
 
